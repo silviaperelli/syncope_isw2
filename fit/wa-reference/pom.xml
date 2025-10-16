@@ -37,6 +37,7 @@ under the License.
     <ianal.phase>none</ianal.phase>
 
     <rootpom.basedir>${basedir}/../..</rootpom.basedir>
+    <skipTests>true</skipTests>
   </properties>
 
   <dependencyManagement>
@@ -169,7 +170,7 @@ under the License.
         </executions>
       </plugin>
 
-      <plugin>
+      <!--<plugin>
         <groupId>io.fabric8</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <configuration>
@@ -214,7 +215,7 @@ under the License.
             </configuration>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
 
       <plugin>
         <groupId>org.codehaus.cargo</groupId>

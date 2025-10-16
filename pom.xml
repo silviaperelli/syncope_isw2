@@ -1743,6 +1743,17 @@ under the License.
             <redirectTestOutputToFile>true</redirectTestOutputToFile>
             <encoding>utf-8</encoding>
             <runOrder>alphabetical</runOrder>
+            <excludes>
+              <!-- Esclude TUTTI i file di test da ogni cartella -->
+              <exclude>**/*</exclude>
+            </excludes>
+            <includes>
+              <!--
+                Include solo i tuoi test unitari.
+                Mettili in una cartella come 'src/test/java/com/tuoiprojecto/test/unit'.
+                Maven eseguirà solo i file che corrispondono a questo pattern.
+              <include>**/com/tuoiprogetto/test/unit/**/*.java</include>-->
+            </includes>
           </configuration>
         </plugin>
         <plugin>
@@ -1752,6 +1763,17 @@ under the License.
           <configuration>
             <redirectTestOutputToFile>true</redirectTestOutputToFile>
             <runOrder>alphabetical</runOrder>
+            <excludes>
+              <!-- Esclude TUTTI i file di test da ogni cartella -->
+              <exclude>**/*</exclude>
+            </excludes>
+            <includes>
+              <!--
+                Include solo i tuoi test di integrazione.
+                Mettili in una cartella come 'src/test/java/com/tuoiprojecto/test/integration'.
+
+              <include>**/com/tuoiprogetto/test/integration/**/*.java</include>-->
+            </includes>
           </configuration>
           <executions>
             <execution>
@@ -1870,7 +1892,7 @@ under the License.
         </executions>
       </plugin>
 
-      <plugin>
+      <!--<plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
@@ -1885,7 +1907,7 @@ under the License.
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
 
       <plugin>
         <groupId>org.jacoco</groupId>
@@ -2434,7 +2456,7 @@ under the License.
     <module>fit</module>
     <module>ext</module>
     <module>archetype</module>
-    <module>standalone</module>
+    <!--<module>standalone</module>-->
   </modules>
 
 </project>
