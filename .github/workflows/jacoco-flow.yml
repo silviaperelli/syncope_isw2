@@ -33,10 +33,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 22 and Maven
+      - name: Set up JDK 21 and Maven
         uses: actions/setup-java@v4
         with:
-          java-version: '22'
+          java-version: '21'
           distribution: 'temurin'
           cache: maven
 

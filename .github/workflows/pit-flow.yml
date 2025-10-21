@@ -14,43 +14,39 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-
-name: Java CI Build with Maven
+name: PIT Mutation Testing
 
 on:
   push:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+  workflow_dispatch:
 
 jobs:
-  build:
+  build-and-mutation-test:
+    name: Build with PIT Mutation Testing
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up JDK 21 and Maven
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: maven
 
-      - name: Cache Maven packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+      - name: Run PIT Mutation Testing
+        # Eseguiamo la build con il profilo 'pit'
+        run: mvn clean verify -P pitest
 
-      - name: Build with Maven
-        run: mvn clean verify
-
-      - name: Upload Surefire Test Report
+      - name: Upload PIT Mutation Test Report
         uses: actions/upload-artifact@v4
         with:
-          name: surefire-report
-          path: '**/target/surefire-reports'
+          name: pit-report
+          # Il path di default per i report di PIT
+          path: '**/target/pit-reports/'
           if-no-files-found: warn
