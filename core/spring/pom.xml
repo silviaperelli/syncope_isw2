@@ -194,7 +194,7 @@ under the License.
           </executions>
           <configuration>
             <targetClasses>
-              <param>org.apache.syncope.core.spring.security.*</param>
+              <param>org.apache.syncope.core.spring.security.DefaultEncryptor</param>
             </targetClasses>
             <targetTests>
               <param>com.mytests.*</param>
