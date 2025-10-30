@@ -70,7 +70,7 @@ public class DefaultEncryptorEncodeTest {
                 Arguments.of(ValueType.ALPHANUMERIC, null, String.class),
                 Arguments.of(ValueType.NULL, CipherAlgorithm.AES, null)
 
-                // Failure
+                // Test Failure
                 //Arguments.of(ValueType.ALPHANUMERIC, null, Exception.class),
                 //Arguments.of(ValueType.NULL, CipherAlgorithm.AES, Exception.class)
         );
