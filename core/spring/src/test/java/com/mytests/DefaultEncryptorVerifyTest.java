@@ -58,6 +58,7 @@ public class DefaultEncryptorVerifyTest {
     private static Stream<Arguments> data() throws Exception {
         String encodedWithAES = encryptor.encode(ValueType.VALID.getValue(), CipherAlgorithm.AES);
         String encodedWithSHA256 = encryptor.encode(ValueType.VALID.getValue(), CipherAlgorithm.SHA256);
+        String encodedWithBCRYPT = encryptor.encode(ValueType.VALID.getValue(), CipherAlgorithm.BCRYPT);
 
         return Stream.of(
                 Arguments.of(ValueType.NULL.getValue(), CipherAlgorithm.AES, encodedWithAES, false),
@@ -68,9 +69,14 @@ public class DefaultEncryptorVerifyTest {
                 Arguments.of(ValueType.VALID.getValue(), CipherAlgorithm.SHA256, encodedWithSHA256, true),
                 Arguments.of(ValueType.VALID.getValue(), CipherAlgorithm.AES, encodedWithSHA256, false),
                 Arguments.of(ValueType.VALID.getValue(), CipherAlgorithm.AES, "@@@INVALID@@@", false),
-                Arguments.of(ValueType.VALID.getValue(), CipherAlgorithm.AES, null, false)
+                Arguments.of(ValueType.VALID.getValue(), CipherAlgorithm.AES, null, false),
 
                 //Arguments.of(ValueType.VALID.getValue(), CipherAlgorithm.AES, "@@@INVALID@@@", Exception.class)
+
+                // Test aggiuntivi dopo Jacoco
+                Arguments.of(ValueType.VALID.getValue(), CipherAlgorithm.BCRYPT, encodedWithBCRYPT, true),
+                Arguments.of(ValueType.WRONG.getValue(), CipherAlgorithm.BCRYPT, encodedWithBCRYPT, false),
+                Arguments.of(ValueType.VALID.getValue(), CipherAlgorithm.BCRYPT, "@@@INVALID@@@", false)
         );
     }
 
@@ -93,5 +99,4 @@ public class DefaultEncryptorVerifyTest {
                     "Il valore restituito non corrisponde all'output atteso");
         }
     }
-
 }
