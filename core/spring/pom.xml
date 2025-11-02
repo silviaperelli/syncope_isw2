@@ -195,6 +195,7 @@ under the License.
           <configuration>
             <targetClasses>
               <param>org.apache.syncope.core.spring.security.DefaultEncryptor</param>
+              <param>org.apache.syncope.core.spring.security.DefaultPasswordGenerator</param>
             </targetClasses>
             <targetTests>
               <param>com.mytests.*</param>
