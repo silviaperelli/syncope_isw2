@@ -73,7 +73,13 @@ public class DefaultPasswordGeneratorTest {
         LIST_WITH_NULL,
         NO_COMPATIBLE_RULES,
         ILLEGAL_CHARS,
-        WORDS_NOT_PERMITTED
+        WORDS_NOT_PERMITTED,
+        ALPHABETICAL_LOWERCASE_SPECIAL,
+        USERNAME_ALLOWED_MIN_ZERO,
+        MIN_GREATER_THAN_MAX,
+        REPEAT_SAME,
+        MERGE_COMBINED,
+        MIN_ZERO_AND_LOW_MAX
     }
 
     private TestablePasswordGenerator passwordGenerator;
@@ -134,7 +140,31 @@ public class DefaultPasswordGeneratorTest {
                 }),
                 Arguments.of(PolicyInputType.WORDS_NOT_PERMITTED, (Consumer<String>) pw -> {
                     assertFalse(pw.contains("abc"));
+                }),
+
+                // Test aggiuntivi dopo Jacoco
+                Arguments.of(PolicyInputType.ALPHABETICAL_LOWERCASE_SPECIAL, (Consumer<String>) pw -> {
+                    assertTrue(pw.chars().anyMatch(Character::isLowerCase));
+                }),
+                Arguments.of(PolicyInputType.USERNAME_ALLOWED_MIN_ZERO, (Consumer<String>) pw -> {
+                    assertTrue(pw.length() >= 8);
+                }),
+                Arguments.of(PolicyInputType.MIN_GREATER_THAN_MAX, (Consumer<String>) pw -> {
+                    assertTrue(pw.length() >= 20);
+                }),
+                Arguments.of(PolicyInputType.REPEAT_SAME, (Consumer<String>) pw -> {
+                    assertNotNull(pw);
+                    assertFalse(pw.isEmpty());
+                }),
+                Arguments.of(PolicyInputType.MERGE_COMBINED, (Consumer<String>) pw -> {
+                    assertTrue(pw.length() >= 12);
+                    assertFalse(pw.contains("$"));
+                    assertTrue(pw.chars().anyMatch(c -> "@#!".indexOf(c) >= 0));
+                }),
+                Arguments.of(PolicyInputType.MIN_ZERO_AND_LOW_MAX, (Consumer<String>) pw -> {
+                    assertEquals(5, pw.length());
                 })
+
 
                 // Test failure
                 //Arguments.of(PolicyInputType.NO_COMPATIBLE_RULES, IllegalArgumentException.class)
@@ -217,6 +247,69 @@ public class DefaultPasswordGeneratorTest {
                 rules.add(createMockRule(createRuleConf(conf ->
                         conf.getWordsNotPermitted().add("abc"))));
                 break;
+
+            case ALPHABETICAL_LOWERCASE_SPECIAL:
+                policies.add(Mockito.mock(PasswordPolicy.class));
+                rules.add(createMockRule(createRuleConf(conf -> {
+                    conf.setAlphabetical(2);
+                    conf.setLowercase(3);
+                    conf.setSpecial(1);
+                    conf.getSpecialChars().add('@');
+                })));
+                break;
+
+            case USERNAME_ALLOWED_MIN_ZERO:
+                policies.add(Mockito.mock(PasswordPolicy.class));
+                rules.add(createMockRule(createRuleConf(conf -> {
+                    conf.setMinLength(0);
+                    conf.setUsernameAllowed(true);
+                })));
+                break;
+
+            case MIN_GREATER_THAN_MAX:
+                policies.add(Mockito.mock(PasswordPolicy.class));
+                rules.add(createMockRule(createRuleConf(conf -> {
+                    conf.setMinLength(20);
+                    conf.setMaxLength(10);
+                })));
+                break;
+
+            case REPEAT_SAME:
+                policies.add(Mockito.mock(PasswordPolicy.class));
+                rules.add(createMockRule(createRuleConf(conf -> conf.setRepeatSame(3))));
+                break;
+
+            case MERGE_COMBINED:
+                policies.add(Mockito.mock(PasswordPolicy.class));
+                policies.add(Mockito.mock(PasswordPolicy.class));
+
+                rules.add(createMockRule(createRuleConf(conf -> {
+                    conf.setUsernameAllowed(true);
+                    conf.getSpecialChars().addAll(Set.of('@', '!'));
+                    conf.setSpecial(1);
+                    conf.getIllegalChars().add('$');
+                    conf.getWordsNotPermitted().add("password");
+                })));
+
+                rules.add(createMockRule(createRuleConf(conf -> {
+                    conf.setMinLength(12);
+                    conf.setUsernameAllowed(false);
+                    conf.getSpecialChars().addAll(Set.of('!', '#'));
+                    conf.setSpecial(1);
+                    conf.getIllegalChars().add('%');
+                    conf.getWordsNotPermitted().add("admin");
+                })));
+                break;
+
+            case MIN_ZERO_AND_LOW_MAX:
+                policies.add(Mockito.mock(PasswordPolicy.class));
+                policies.add(Mockito.mock(PasswordPolicy.class));
+                rules.add(createMockRule(createRuleConf(conf -> {})));
+                rules.add(createMockRule(createRuleConf(conf -> {
+                    conf.setMaxLength(5);
+                })));
+                break;
+
         }
 
         passwordGenerator.setRulesToReturn(rules);
