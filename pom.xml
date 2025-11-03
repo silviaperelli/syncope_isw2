@@ -2163,7 +2163,6 @@ under the License.
 
   <profiles>
 
-    <!-- PROFILO JACOCO - VERSIONE DEFINITIVA E PIÙ FORTE -->
     <profile>
       <id>jacoco</id>
       <build>
