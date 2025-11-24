@@ -64,7 +64,6 @@ public class DefaultEncryptorDecodeTest {
                 //Arguments.of(encodedWithAES, null, PASSWORD, null)
                 //Arguments.of(encodedWithAES, CipherAlgorithm.SHA256, null, Exception.class),
                 //Arguments.of(encodedWithSHA256, CipherAlgorithm.SHA256, null, Exception.class)
-                //Arguments.of(encodedWithSHA256, CipherAlgorithm.AES, null, null)
         );
     }
 
