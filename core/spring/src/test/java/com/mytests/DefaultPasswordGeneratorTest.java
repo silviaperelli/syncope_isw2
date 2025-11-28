@@ -85,7 +85,7 @@ public class DefaultPasswordGeneratorTest {
         MIN_GREATER_THAN_MAX,
         REPEAT_SAME,
         MERGE_COMBINED,
-        MIN_ZERO_AND_LOW_MAX
+        NO_MIN_AND_LOW_MAX
     }
 
     private TestablePasswordGenerator passwordGenerator;
@@ -150,7 +150,7 @@ public class DefaultPasswordGeneratorTest {
 
                 // Test aggiuntivi dopo Jacoco
                 Arguments.of(PolicyInputType.ALPHABETICAL_LOWERCASE_SPECIAL, (Consumer<String>) pw -> {
-                    assertTrue(pw.chars().anyMatch(Character::isLowerCase));
+                    assertTrue(pw.chars().filter(Character::isLowerCase).count() >= 3);
                 }),
                 Arguments.of(PolicyInputType.USERNAME_ALLOWED_MIN_ZERO, (Consumer<String>) pw -> {
                     assertTrue(pw.length() >= 8);
@@ -167,7 +167,7 @@ public class DefaultPasswordGeneratorTest {
                     assertFalse(pw.contains("$"));
                     assertTrue(pw.chars().anyMatch(c -> "@#!".indexOf(c) >= 0));
                 }),
-                Arguments.of(PolicyInputType.MIN_ZERO_AND_LOW_MAX, (Consumer<String>) pw -> {
+                Arguments.of(PolicyInputType.NO_MIN_AND_LOW_MAX, (Consumer<String>) pw -> {
                     assertEquals(5, pw.length());
                 })
 
@@ -305,7 +305,7 @@ public class DefaultPasswordGeneratorTest {
                 })));
                 break;
 
-            case MIN_ZERO_AND_LOW_MAX:
+            case NO_MIN_AND_LOW_MAX:
                 policies.add(Mockito.mock(PasswordPolicy.class));
                 policies.add(Mockito.mock(PasswordPolicy.class));
                 rules.add(createMockRule(createRuleConf(conf -> {})));
