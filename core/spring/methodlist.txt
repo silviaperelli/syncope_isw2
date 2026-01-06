@@ -1,0 +1,3 @@
+org.apache.syncope.core.spring.security.DefaultEncryptorRandoopSetup.testAESRoundTrip(java.lang.String)
+org.apache.syncope.core.spring.security.DefaultEncryptorRandoopSetup.testBCryptVerification(java.lang.String)
+org.apache.syncope.core.spring.security.DefaultEncryptorRandoopSetup.testVerifyFailure(java.lang.String, java.lang.String)

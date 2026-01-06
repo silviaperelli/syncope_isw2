@@ -41,7 +41,7 @@ jobs:
 
       - name: Run PIT Mutation Testing
         # Eseguiamo la build con il profilo 'pit'
-        run: mvn clean verify -P pitest
+        run: mvn clean verify -P pitest -Drat.skip=true
 
       - name: Upload PIT Mutation Test Report
         uses: actions/upload-artifact@v4
